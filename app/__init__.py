@@ -9,7 +9,7 @@ load_dotenv()
 app = Flask(__name__)
 
 
-isKaitlyn = True
+isKayla = True
 
 @app.route('/')
 def kaitlyn_index():
