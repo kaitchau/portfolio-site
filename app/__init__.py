@@ -35,7 +35,7 @@ def kaitlyn_hobbies():
 def kaitlyn_places():
     return render_template('kaitlyn_places.html', url=os.getenv("URL"))
 
-app = Flask(__name__)
+# app = Flask(__name__)
 
 mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
 user=os.getenv("MYSQL_USER"),
