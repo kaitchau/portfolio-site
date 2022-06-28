@@ -75,7 +75,7 @@ def get_time_line_post():
         'timeline_posts': [
             model_to_dict(p)
             for p in
-TimelinePost.select()
+TimelinePost.select().order_by(TimelinePost.created_at.desc())
         ]
     }
     return posts
@@ -91,6 +91,10 @@ def delete_time_line_post():
 TimelinePost.select()
         ]
     }    
-    the_id = posts['timeline_posts'][-1]["id"]
+    the_id = posts['timeline_posts'][0]["id"]
     TimelinePost.delete_by_id(the_id)
     return "Successfully deleted " + str(the_id) + "\n"
+
+@app.route('/timeline')
+def timeline():
+    return render_template('timeline.html', title="Timeline")
