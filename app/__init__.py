@@ -72,7 +72,7 @@ def post_time_line_post():
 def get_time_line_post():
     return {
         'timeline_posts': [
-            model_to_dict
+            model_to_dict(p)
             for p in
 TimelinePost.select().order_by(TimelinePost.created_at.desc())
         ]
