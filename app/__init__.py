@@ -82,4 +82,4 @@ TimelinePost.select().order_by(TimelinePost.created_at.desc())
 def delete_time_line_post():
     the_id = request.form['id']
     TimelinePost.delete_by_id(the_id)
-    return "Successfully deleted " + the_id
+    return "Successfully deleted " + the_id + "\n"
