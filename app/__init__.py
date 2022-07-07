@@ -36,12 +36,15 @@ def kaitlyn_places():
     return render_template('kaitlyn_places.html', url=os.getenv("URL"))
 
 # app = Flask(__name__)
-
-mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
-user=os.getenv("MYSQL_USER"),
-password=os.getenv("MYSQL_PASSWORD"),
-host=os.getenv("MYSQL_HOST"),
-port=3306
+if os.getenv("TESTING") == "true":
+    print("Running in test mode")
+    mydb = SqliteDatabase('file:memory?mode=memory&cache=shared', uri=True)
+else:
+        mydb = MySQLDatabase(os.getenv("MYSQL_DATABASE"),
+            user=os.getenv("MYSQL_USER"),
+            password=os.getenv("MYSQL_PASSWORD"),
+            host=os.getenv("MYSQL_HOST"),
+            port=3306
 )
 
 print(mydb)
@@ -60,9 +63,22 @@ mydb.create_tables([TimelinePost])
 
 @app.route('/api/timeline_post', methods=['POST'])
 def post_time_line_post():
-    name = request.form['name']
+    if "name" not in request.form:
+        return "Invalid name", 400
+    else:
+        name = request.form['name']
+        if name == "":
+            return "Invalid name", 400
     email = request.form['email']
+    if "email" not in request.form:
+        return "Invalid email", 400
+    else:
+        email = request.form['email']
+        if email == "" or "@" not in email:
+            return "Invalid email", 400
     content = request.form['content']
+    if content == "":
+        return "Invalid content", 400
     timeline_post = TimelinePost.create(name=name, email=email, content=content)
 
     return model_to_dict(timeline_post)
