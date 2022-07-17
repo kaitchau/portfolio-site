@@ -2,8 +2,10 @@ import os
 from flask import Flask, render_template, request
 from dotenv import load_dotenv
 from peewee import *
+
 import datetime
 from playhouse.shortcuts import model_to_dict
+import re
 
 load_dotenv()
 app = Flask(__name__)
@@ -70,9 +72,27 @@ mydb.create_tables([TimelinePost])
 
 @app.route('/api/timeline_post', methods=['POST'])
 def post_time_line_post():
-    name = request.form['name']
-    email = request.form['email']
-    content = request.form['content']
+    
+    if "name" not in request.form:
+        return "Invalid name", 400
+    else:
+        name = request.form['name']
+        if name == "":
+            return "Invalid name", 400
+
+    if "content" not in request.form:
+        return "Invalid content", 400
+    else:
+        content = request.form['content']
+        if content == "":
+            return "Invalid content", 400
+
+    if "email" not in request.form:
+        return "Invalid email", 400
+    else:
+        email = request.form['email']
+        if email == "" or not re.match(r"[A-Za-z0-9._-]+@[A-Za-z0-9-]+\.[A-Za-z]+", email):
+            return "Invalid email", 400
     timeline_post = TimelinePost.create(name=name, email=email, content=content)
 
     return model_to_dict(timeline_post)
@@ -85,7 +105,7 @@ def get_time_line_post():
         'timeline_posts': [
             model_to_dict(p)
             for p in
-TimelinePost.select().order_by(TimelinePost.created_at.desc())
+            TimelinePost.select().order_by(TimelinePost.created_at.desc())
         ]
     }
     return posts
@@ -98,7 +118,7 @@ def delete_time_line_post():
         'timeline_posts': [
             model_to_dict(p)
             for p in
-TimelinePost.select()
+            TimelinePost.select()
         ]
     }    
     the_id = posts['timeline_posts'][0]["id"]
