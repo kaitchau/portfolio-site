@@ -7,6 +7,8 @@ import datetime
 from playhouse.shortcuts import model_to_dict
 import re
 
+from jinja2 import Template
+
 load_dotenv()
 app = Flask(__name__)
 
@@ -32,7 +34,7 @@ isKayla = True
 
 @app.route('/')
 def kaitlyn_index():
-    return render_template('kaitlyn_index.html', url=os.getenv("URL"))
+    return render_template('kaitlyn_index.html', url=os.getenv("URL"), title="TESTING TITLE")
 
 @app.route('/kaitlyn_about')
 def kaitlyn_about():
