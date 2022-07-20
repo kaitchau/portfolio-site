@@ -34,7 +34,7 @@ isKayla = True
 
 @app.route('/')
 def kaitlyn_index():
-    return render_template('kaitlyn_index.html', url=os.getenv("URL"), title="Kaitlyn Chau's Portfolio")
+    return render_template('kaitlyn_index.html', url=os.getenv("URL"), title="Portfolio Site")
 
 @app.route('/kaitlyn_about')
 def kaitlyn_about():
